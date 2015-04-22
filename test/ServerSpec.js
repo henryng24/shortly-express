@@ -177,6 +177,9 @@ describe('', function() {
 
         requestWithSession(options, function(error, res, body) {
           var code = res.body.code;
+          console.log("res body code " +res.body.code);
+          //console.log("link.get" + link);
+
           expect(code).to.equal(link.get('code'));
           done();
         });

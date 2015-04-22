@@ -74,39 +74,29 @@ var signupPage = function(req, res){
   })
 };
 
-app.get('/',
-function(req, res) {
-  if (req.session.username) {
-    res.render('index');
-  } else {
-    res.redirect('/login');
-  }
+app.get('/', util.checkUser, function(req, res) {
+  res.render('index');
 });
 
 
-app.get('/create', 
-function(req, res) {
-  if (req.session.username) {
+app.get('/create', util.checkUser, function(req, res) {
     res.render('index');
-  } else {
-    res.redirect('/login');
-  }
-});
+  });
 
-app.get('/links', 
+app.get('/links', util.checkUser, 
 function(req, res) {
-  if (req.session.username) {
     Links.reset().fetch().then(function(links) {
       res.send(200, links.models);
     });
-    } else {
-     res.redirect('/login');
-   }
 });
 
 app.post('/links', 
 function(req, res) {
   var uri = req.body.url;
+
+    db.knex('urls').then(function(response) {
+    console.log(response);
+  });
 
   if (!util.isValidUrl(uri)) {
     return res.send(404);
